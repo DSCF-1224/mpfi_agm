@@ -19,3 +19,7 @@ jobs:
 
             - name: Check library versions
               run: dpkg -l | grep -E "pkg-config|cmake|libgmp|libmpfr|libmpfi"
+
+            - name: Configure CMake
+              run: |
+                cmake -B build -S .
