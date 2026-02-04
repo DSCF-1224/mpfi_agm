@@ -28,3 +28,7 @@ jobs:
 
             - name: Run version checker
               run: ./build/check_versions
+
+            - name: Run AGM tests
+              run: |
+                  ./build/check_step
