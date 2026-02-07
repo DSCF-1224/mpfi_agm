@@ -7,6 +7,7 @@
 #include "../src/mpfi_agm.h"
 
 
+
 void test_unit(const mpfr_prec_t mpfi_prec, const unsigned long input)
 {
     mpfi_t x, res_a, res_g;
@@ -28,9 +29,21 @@ void test_unit(const mpfr_prec_t mpfi_prec, const unsigned long input)
     mpfi_clear(x);
 }
 
+
+
+void test_per_prec(const mpfr_prec_t mpfi_prec)
+{
+    for (unsigned long i = 0; i < 6; i++)
+    {
+        test_unit(mpfi_prec, i);
+    }
+}
+
+
+
 int main(void)
 {
-    test_unit(53, 1UL);
+    test_per_prec(53);
 
     return EXIT_SUCCESS;
 }
