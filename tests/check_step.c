@@ -19,7 +19,7 @@ void test_same_input_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
     mpfi_init2(res_a, mpfi_prec);
     mpfi_init2(res_g, mpfi_prec);
 
-    mpfi_init_set_ui(x, input);
+    mpfi_set_ui(x, input);
 
     mpfi_agm_step(res_a, res_g, x, x);
 
