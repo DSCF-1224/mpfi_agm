@@ -43,7 +43,9 @@ void test_per_prec(const mpfr_prec_t mpfi_prec)
 
 int main(void)
 {
-    test_per_prec(53);
+    test_per_prec( 53);
+    test_per_prec(113);
+    test_per_prec(237);
 
     return EXIT_SUCCESS;
 }
