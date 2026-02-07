@@ -15,10 +15,10 @@ jobs:
             - name: Install dependencies
               run: |
                   sudo apt-get update
-                  sudo apt-get install -y cmake libmpfi-dev
+                  sudo apt-get install -y cmake libmpfi-dev valgrind
 
             - name: Check library versions
-              run: dpkg -l | grep -E "pkg-config|cmake|libgmp|libmpfr|libmpfi"
+              run: dpkg -l | grep -E "pkg-config|cmake|libgmp|libmpfr|libmpfi|valgrind"
 
             - name: Configure CMake
               run: cmake -B build -S .
@@ -30,5 +30,4 @@ jobs:
               run: ./build/check_versions
 
             - name: Run AGM tests
-              run: |
-                  ./build/check_step
+              run: valgrind --leak-check=full --error-exitcode=1 ./build/check_step
