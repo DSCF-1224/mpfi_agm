@@ -8,6 +8,28 @@
 
 
 
+void test_same_input_case(const mpfi_srcptr input)
+{
+    mpfi_t res_a, res_g;
+
+
+
+    const mpfr_prec_t mpfi_prec = mpfi_get_prec(input);
+
+    mpfi_init2(res_a, mpfi_prec);
+    mpfi_init2(res_g, mpfi_prec);
+
+    mpfi_agm_step(res_a, res_g, input, input);
+
+    assert( mpfi_cmp(res_a, input) == 0 );
+    assert( mpfi_cmp(res_g, input) == 0 );
+
+    mpfi_clear(res_a);
+    mpfi_clear(res_g);
+}
+
+
+
 void test_same_input_case_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
 {
     mpfi_t x, res_a, res_g;
