@@ -8,7 +8,7 @@
 
 
 
-void test_same_input_unit(const mpfr_prec_t mpfi_prec, const unsigned long input)
+void test_same_input_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
 {
     mpfi_t x, res_a, res_g;
 
@@ -35,7 +35,7 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
 {
     for (unsigned long i = 0; i < 6; i++)
     {
-        test_same_input_unit(mpfi_prec, i);
+        test_same_input_ui(mpfi_prec, i);
     }
 }
 
