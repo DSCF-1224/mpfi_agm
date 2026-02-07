@@ -27,6 +27,8 @@ void test_same_input_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
     assert( mpfi_cmp_ui(res_g, input) == 0 );
 
     mpfi_clear(x);
+    mpfi_clear(res_a);
+    mpfi_clear(res_g);
 }
 
 
