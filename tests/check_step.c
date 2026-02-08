@@ -78,6 +78,16 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
 
 
 
+    for (int i = 0; i <= 10; i++)
+    for (int j = 0; j <= 10; j++)
+    {
+        mpfi_interv_d(input, ((double)i)/10, ((double)j)/10);
+
+        test_same_input_case(input);
+    }
+
+
+
     mpfr_set_inf  ( &input->left  , -1 );
     mpfr_set_zero ( &input->right ,  1 );
 
