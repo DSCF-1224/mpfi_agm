@@ -21,8 +21,16 @@ void test_same_input_case(const mpfi_srcptr input)
 
     mpfi_agm_step(res_a, res_g, input, input);
 
-    assert( mpfi_cmp(res_a, input) == 0 );
-    assert( mpfi_cmp(res_g, input) == 0 );
+    if ( mpfi_nan_p(input) )
+    {
+        assert( mpfi_nan_p(res_a) );
+        assert( mpfi_nan_p(res_g) );
+    }
+    else
+    {
+        assert( mpfi_cmp(res_a, input) == 0 );
+        assert( mpfi_cmp(res_g, input) == 0 );
+    }
 
     mpfi_clear(res_a);
     mpfi_clear(res_g);
