@@ -78,6 +78,13 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
 
 
 
+    mpfr_set_zero ( &input->left  , 1 );
+    mpfr_set_inf  ( &input->right , 1 );
+
+    test_same_input_case(input);
+
+
+
     mpfr_set_inf( &input->left  , 1 );
     mpfr_set_inf( &input->right , 1 );
 
