@@ -2,6 +2,25 @@ cmake_minimum_required(VERSION 3.10)
 
 project(check_versions C)
 
+
+
+if (NOT CMAKE_BUILD_TYPE)
+    message(FATAL_ERROR "`CMAKE_BUILD_TYPE` not specified")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_C_FLAGS_DEBUG "-Wall -Wextra -Wpedantic -O0 -g")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_C_FLAGS_RELEASE "-Wall -Wextra -O3")
+else()
+    message(FATAL_ERROR "Invalid `CMAKE_BUILD_TYPE`: ${CMAKE_BUILD_TYPE}")
+endif()
+
+message(STATUS "CMAKE_BUILD_TYPE      : ${CMAKE_BUILD_TYPE}"      )
+message(STATUS "CMAKE_C_FLAGS         : ${CMAKE_C_FLAGS}"         )
+message(STATUS "CMAKE_C_FLAGS_DEBUG   : ${CMAKE_C_FLAGS_DEBUG}"   )
+message(STATUS "CMAKE_C_FLAGS_RELEASE : ${CMAKE_C_FLAGS_RELEASE}" )
+
+
+
 # Find GMP and MPFR using pkg-config
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GMP REQUIRED gmp)
