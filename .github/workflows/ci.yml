@@ -36,3 +36,6 @@ jobs:
 
             - name: Run AGM tests
               run: valgrind --leak-check=full --error-exitcode=1 ./build/check_step
+
+            - name: Run AGM examples
+              run: valgrind --leak-check=full --error-exitcode=1 ./build/demo_steps
