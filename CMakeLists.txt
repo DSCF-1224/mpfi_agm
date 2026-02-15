@@ -53,6 +53,26 @@ target_include_directories(check_versions PRIVATE
 
 
 # Create executable: test
+add_executable(check_nan tests/check_nan.c)
+
+# Link libraries
+target_link_libraries(check_nan 
+    ${GMP_LIBRARIES}
+    ${MPFR_LIBRARIES}
+    ${MPFI_LIBRARY}
+)
+
+# Include directories
+target_include_directories(check_nan PRIVATE
+    ${GMP_INCLUDE_DIRS}
+    ${MPFR_INCLUDE_DIRS}
+    ${MPFI_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}
+)
+
+
+
+# Create executable: test
 add_executable(check_step tests/check_step.c)
 
 # Link libraries
