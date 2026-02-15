@@ -32,7 +32,7 @@ jobs:
               run: cmake --build build
 
             - name: Run version checker
-              run: ./build/check_versions
+              run: ./build/tests/check_versions
 
             - name: Run AGM tests
               run: |
