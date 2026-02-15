@@ -69,3 +69,23 @@ target_include_directories(check_step PRIVATE
     ${MPFI_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}
 )
+
+
+
+# Create executable: example
+add_executable(demo_steps examples/demo_steps.c)
+
+# Link libraries
+target_link_libraries(demo_steps 
+    ${GMP_LIBRARIES}
+    ${MPFR_LIBRARIES}
+    ${MPFI_LIBRARY}
+)
+
+# Include directories
+target_include_directories(demo_steps PRIVATE
+    ${GMP_INCLUDE_DIRS}
+    ${MPFR_INCLUDE_DIRS}
+    ${MPFI_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}
+)
