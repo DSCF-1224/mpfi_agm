@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(check_versions C)
+project(mpfi_agm LANGUAGES C)
 
 
 
@@ -27,24 +27,25 @@ pkg_check_modules(GMP REQUIRED gmp)
 pkg_check_modules(MPFR REQUIRED mpfr)
 
 # MPFI doesn't have pkg-config, so we find it manually
-# It's typically installed alongside MPFR
 find_library(MPFI_LIBRARY NAMES mpfi REQUIRED)
 find_path(MPFI_INCLUDE_DIR mpfi.h REQUIRED)
 
 
 
-# Create executable: Version checker
-add_executable(check_versions tests/check_versions.c)
+# Header-only library target
+add_library(mpfi_agm INTERFACE)
 
-# Link libraries
-target_link_libraries(check_versions 
+target_include_directories(mpfi_agm INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(mpfi_agm INTERFACE
     ${GMP_LIBRARIES}
     ${MPFR_LIBRARIES}
     ${MPFI_LIBRARY}
 )
 
-# Include directories
-target_include_directories(check_versions PRIVATE
+target_include_directories(mpfi_agm INTERFACE
     ${GMP_INCLUDE_DIRS}
     ${MPFR_INCLUDE_DIRS}
     ${MPFI_INCLUDE_DIR}
@@ -52,60 +53,14 @@ target_include_directories(check_versions PRIVATE
 
 
 
-# Create executable: test
-add_executable(check_nan tests/check_nan.c)
+# Option to build tests and examples
+option(BUILD_TESTING "Build tests" ON)
+option(BUILD_EXAMPLES "Build examples" ON)
 
-# Link libraries
-target_link_libraries(check_nan 
-    ${GMP_LIBRARIES}
-    ${MPFR_LIBRARIES}
-    ${MPFI_LIBRARY}
-)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
 
-# Include directories
-target_include_directories(check_nan PRIVATE
-    ${GMP_INCLUDE_DIRS}
-    ${MPFR_INCLUDE_DIRS}
-    ${MPFI_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}
-)
-
-
-
-# Create executable: test
-add_executable(check_step tests/check_step.c)
-
-# Link libraries
-target_link_libraries(check_step 
-    ${GMP_LIBRARIES}
-    ${MPFR_LIBRARIES}
-    ${MPFI_LIBRARY}
-)
-
-# Include directories
-target_include_directories(check_step PRIVATE
-    ${GMP_INCLUDE_DIRS}
-    ${MPFR_INCLUDE_DIRS}
-    ${MPFI_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}
-)
-
-
-
-# Create executable: example
-add_executable(demo_steps examples/demo_steps.c)
-
-# Link libraries
-target_link_libraries(demo_steps 
-    ${GMP_LIBRARIES}
-    ${MPFR_LIBRARIES}
-    ${MPFI_LIBRARY}
-)
-
-# Include directories
-target_include_directories(demo_steps PRIVATE
-    ${GMP_INCLUDE_DIRS}
-    ${MPFR_INCLUDE_DIRS}
-    ${MPFI_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}
-)
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
