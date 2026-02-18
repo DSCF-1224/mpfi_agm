@@ -47,6 +47,8 @@ static void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
         {
             mpfi_set(res_a_prev, res_a);
             mpfi_set(res_g_prev, res_g);
+
+            continue;
         }
 
         break;
