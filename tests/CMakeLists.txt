@@ -12,7 +12,7 @@ endfunction()
 
 
 # Add all tests
-add_mpfi_test( check_nan           check_nan.c         )
-add_mpfi_test( check_point_input.c check_point_input.c )
-add_mpfi_test( check_step          check_step.c        )
-add_mpfi_test( check_versions      check_versions.c    )
+add_mpfi_test( check_nan         check_nan.c         )
+add_mpfi_test( check_point_input check_point_input.c )
+add_mpfi_test( check_step        check_step.c        )
+add_mpfi_test( check_versions    check_versions.c    )
