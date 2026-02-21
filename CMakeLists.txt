@@ -32,23 +32,17 @@ find_path(MPFI_INCLUDE_DIR mpfi.h REQUIRED)
 
 
 
-# Header-only library target
-add_library(mpfi_agm INTERFACE)
+# Compiled library target for mpfi_agm
+add_library(mpfi_agm src/mpfi_agm.c)
 
-target_include_directories(mpfi_agm INTERFACE
+target_include_directories(mpfi_agm PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(mpfi_agm INTERFACE
+target_link_libraries(mpfi_agm PRIVATE
     ${GMP_LIBRARIES}
     ${MPFR_LIBRARIES}
     ${MPFI_LIBRARY}
-)
-
-target_include_directories(mpfi_agm INTERFACE
-    ${GMP_INCLUDE_DIRS}
-    ${MPFR_INCLUDE_DIRS}
-    ${MPFI_INCLUDE_DIR}
 )
 
 
