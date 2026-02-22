@@ -52,8 +52,16 @@ void test_point_input_unit_half(mpfr_ptr mpfr_res, mpfr_srcptr mpfr_x, mpfr_srcp
 
     mpfr_agm(mpfr_res, mpfr_x, mpfr_y, MPFR_RNDN);
 
-    assert( mpfr_lessequal_p( &(mpfi_res->left), mpfr_res  ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
-    assert( mpfr_lessequal_p( mpfr_res, &(mpfi_res->right) ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+    if ( mpfr_nan_p(mpfr_res) )
+    {
+        assert( mpfr_nan_p( &( mpfi_res->left  )) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+        assert( mpfr_nan_p( &( mpfi_res->right )) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+    }
+    else
+    {
+        assert( mpfr_lessequal_p( &(mpfi_res->left), mpfr_res  ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+        assert( mpfr_lessequal_p( mpfr_res, &(mpfi_res->right) ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+    }
 }
 
 
