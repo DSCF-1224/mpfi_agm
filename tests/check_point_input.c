@@ -8,6 +8,15 @@
 
 
 
+void mpfr_mpfi_set_si(mpfr_ptr mpfr_res, mpfi_ptr mpfi_res, const long src, mpfr_rnd_t rnd)
+{
+    mpfr_set_si(mpfr_res, src, rnd);
+
+    mpfi_set(mpfi_res, mpfr_res);
+}
+
+
+
 int printf_res_mpfr_and_mpfi(mpfr_srcptr mpfr_x, mpfr_srcptr mpfr_y, mpfr_srcptr mpfr_res, mpfi_srcptr mpfi_x, mpfi_srcptr mpfi_y, mpfi_srcptr mpfi_res)
 {
     printf("\n");
@@ -67,17 +76,13 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
     for (int i =  1; i <= 5; i++)
     {
-        mpfr_set_si(mpfr_x, i, MPFR_RNDN);
-
-        mpfi_set_si(mpfi_x, i);
+        mpfr_mpfi_set_si(mpfr_x, mpfi_x, i, MPFR_RNDN);
 
 
 
         for (int j =  i; j <= 5; j++)
         {
-            mpfr_set_si(mpfr_y, j, MPFR_RNDN);
-
-            mpfi_set_si(mpfi_y, j);
+            mpfr_mpfi_set_si(mpfr_y, mpfi_y, j, MPFR_RNDN);
 
             if (i == j)
             {
