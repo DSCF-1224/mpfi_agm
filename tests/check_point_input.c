@@ -12,7 +12,7 @@ void mpfr_mpfi_set_si(mpfr_ptr mpfr_res, mpfi_ptr mpfi_res, const long src, mpfr
 {
     mpfr_set_si(mpfr_res, src, rnd);
 
-    mpfi_set(mpfi_res, mpfr_res);
+    mpfi_set_fr(mpfi_res, mpfr_res);
 }
 
 
