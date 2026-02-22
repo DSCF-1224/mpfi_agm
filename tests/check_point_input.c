@@ -8,6 +8,15 @@
 
 
 
+void mpfr_mpfi_set_inf(mpfr_ptr mpfr_res, mpfi_ptr mpfi_res, const int sign)
+{
+    mpfr_set_inf(mpfr_res, sign);
+
+    mpfi_set_fr(mpfi_res, mpfr_res);
+}
+
+
+
 void mpfr_mpfi_set_si(mpfr_ptr mpfr_res, mpfi_ptr mpfi_res, const long src, mpfr_rnd_t rnd)
 {
     mpfr_set_si(mpfr_res, src, rnd);
@@ -96,18 +105,16 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
 
 
-        mpfr_set_inf(mpfr_y, 1);
-
-        mpfi_set_fr(mpfi_y, mpfr_y);
+        mpfr_mpfi_set_inf(mpfr_y, mpfi_y, 1);
 
         test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
     }
 
 
 
-    mpfr_set_inf(mpfr_x, 1); mpfi_set_fr(mpfi_x, mpfr_x);
+    mpfr_mpfi_set_inf(mpfr_x, mpfi_x, 1);
 
-    mpfr_set_inf(mpfr_y, 1); mpfi_set_fr(mpfi_y, mpfr_y);
+    mpfr_mpfi_set_inf(mpfr_y, mpfi_y, 1);
 
     test_point_input_unit_half(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
 
