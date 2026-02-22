@@ -66,22 +66,36 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
 
     for (int i =  1; i <= 5; i++)
-    for (int j =  i; j <= 5; j++)
     {
         mpfr_set_si(mpfr_x, i, MPFR_RNDN);
-        mpfr_set_si(mpfr_y, j, MPFR_RNDN);
 
         mpfi_set_si(mpfi_x, i);
-        mpfi_set_si(mpfi_y, j);
 
-        if (i == j)
+
+
+        for (int j =  i; j <= 5; j++)
         {
-            test_point_input_unit_half(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
+            mpfr_set_si(mpfr_y, j, MPFR_RNDN);
+
+            mpfi_set_si(mpfi_y, j);
+
+            if (i == j)
+            {
+                test_point_input_unit_half(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
+            }
+            else
+            {
+                test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
+            }
         }
-        else
-        {
-            test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
-        }
+
+
+
+        mpfr_set_inf(mpfr_y, 1);
+
+        mpfi_set_fr(mpfi_y, mpfr_y);
+
+        test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
     }
 
 
