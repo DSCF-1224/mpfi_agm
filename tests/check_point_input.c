@@ -8,6 +8,24 @@
 
 
 
+void mpfr_mpfi_set_inf(mpfr_ptr mpfr_res, mpfi_ptr mpfi_res, const int sign)
+{
+    mpfr_set_inf(mpfr_res, sign);
+
+    mpfi_set_fr(mpfi_res, mpfr_res);
+}
+
+
+
+void mpfr_mpfi_set_si(mpfr_ptr mpfr_res, mpfi_ptr mpfi_res, const long src, mpfr_rnd_t rnd)
+{
+    mpfr_set_si(mpfr_res, src, rnd);
+
+    mpfi_set_fr(mpfi_res, mpfr_res);
+}
+
+
+
 int printf_res_mpfr_and_mpfi(mpfr_srcptr mpfr_x, mpfr_srcptr mpfr_y, mpfr_srcptr mpfr_res, mpfi_srcptr mpfi_x, mpfi_srcptr mpfi_y, mpfi_srcptr mpfi_res)
 {
     printf("\n");
@@ -34,8 +52,16 @@ void test_point_input_unit_half(mpfr_ptr mpfr_res, mpfr_srcptr mpfr_x, mpfr_srcp
 
     mpfr_agm(mpfr_res, mpfr_x, mpfr_y, MPFR_RNDN);
 
-    assert( mpfr_lessequal_p( &(mpfi_res->left), mpfr_res  ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
-    assert( mpfr_lessequal_p( mpfr_res, &(mpfi_res->right) ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+    if ( mpfr_nan_p(mpfr_res) )
+    {
+        assert( mpfr_nan_p( &( mpfi_res->left  )) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+        assert( mpfr_nan_p( &( mpfi_res->right )) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+    }
+    else
+    {
+        assert( mpfr_lessequal_p( &(mpfi_res->left), mpfr_res  ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+        assert( mpfr_lessequal_p( mpfr_res, &(mpfi_res->right) ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+    }
 }
 
 
@@ -67,17 +93,13 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
     for (int i =  1; i <= 5; i++)
     {
-        mpfr_set_si(mpfr_x, i, MPFR_RNDN);
-
-        mpfi_set_si(mpfi_x, i);
+        mpfr_mpfi_set_si(mpfr_x, mpfi_x, i, MPFR_RNDN);
 
 
 
         for (int j =  i; j <= 5; j++)
         {
-            mpfr_set_si(mpfr_y, j, MPFR_RNDN);
-
-            mpfi_set_si(mpfi_y, j);
+            mpfr_mpfi_set_si(mpfr_y, mpfi_y, j, MPFR_RNDN);
 
             if (i == j)
             {
@@ -91,20 +113,26 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
 
 
-        mpfr_set_inf(mpfr_y, 1);
-
-        mpfi_set_fr(mpfi_y, mpfr_y);
+        mpfr_mpfi_set_inf(mpfr_y, mpfi_y, 1);
 
         test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
     }
 
 
 
-    mpfr_set_inf(mpfr_x, 1); mpfi_set_fr(mpfi_x, mpfr_x);
+    mpfr_mpfi_set_inf(mpfr_x, mpfi_x, 1);
 
-    mpfr_set_inf(mpfr_y, 1); mpfi_set_fr(mpfi_y, mpfr_y);
+    mpfr_mpfi_set_inf(mpfr_y, mpfi_y, 1);
 
     test_point_input_unit_half(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
+
+
+
+    mpfr_mpfi_set_inf(mpfr_x, mpfi_x, -1);
+
+    mpfr_mpfi_set_inf(mpfr_y, mpfi_y, 1);
+
+    test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
 
 
 
