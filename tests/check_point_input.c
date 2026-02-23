@@ -161,6 +161,14 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
 
 
+    mpfr_mpfi_set_zero(mpfr_x, mpfi_x, 1);
+
+    mpfr_mpfi_set_inf(mpfr_y, mpfi_y, -1);
+
+    test_point_input_unit(mpfr_res, mpfr_x, mpfr_y, mpfi_res, mpfi_x, mpfi_y);
+
+
+
     mpfr_clear( mpfr_res );
     mpfr_clear( mpfr_x   );
     mpfr_clear( mpfr_y   );
