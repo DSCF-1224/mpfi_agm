@@ -71,7 +71,21 @@ void mpfi_agm_step(mpfi_ptr res_a, mpfi_ptr res_g, mpfi_srcptr op1, mpfi_srcptr 
 
 void mpfi_agm_step_tmp(mpfi_ptr res_a, mpfi_ptr res_g, mpfi_ptr tmp_a, mpfi_ptr tmp_g, mpfi_srcptr op1, mpfi_srcptr op2)
 {
-    mpfi_add(tmp_a, op1, op2); mpfi_div_ui(res_a, tmp_a, 2UL);
+    /* calculate arithmetic mean */
 
-    mpfi_mul(tmp_g, op1, op2); mpfi_sqrt(res_g, tmp_g);
+    mpfr_add(&(tmp_a->left  ), &( op1->left  ), &( op2->left  ), MPFR_RNDD);
+    mpfr_add(&(tmp_a->right ), &( op1->right ), &( op2->right ), MPFR_RNDU);
+
+    mpfr_div_ui(&( res_a->left  ), &( tmp_a->left  ), 2UL, MPFR_RNDD);
+    mpfr_div_ui(&( res_a->right ), &( tmp_a->right ), 2UL, MPFR_RNDU);
+
+
+
+    /* calculate geometric mean */
+
+    mpfr_mul(&( tmp_g->left  ), &( op1->left  ), &( op2->left  ), MPFR_RNDD);
+    mpfr_mul(&( tmp_g->right ), &( op1->right ), &( op2->right ), MPFR_RNDU);
+
+    mpfr_sqrt(&( res_g->left  ), &( tmp_g->left  ), MPFR_RNDD);
+    mpfr_sqrt(&( res_g->right ), &( tmp_g->right ), MPFR_RNDU);
 }
