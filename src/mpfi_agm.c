@@ -6,13 +6,6 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     const mpfr_prec_t mpfi_prec = mpfi_get_prec(res);
 
-    mpfi_intersect(res, op1, op2);
-
-    if ( !mpfi_is_empty(res) )
-    {
-        mpfi_union(res, op1, op2); return;
-    }
-
     mpfi_t intersection_ag, res_a, res_a_prev, res_g, res_g_prev, tmp_a, tmp_g;
 
     mpfi_init_set(intersection_ag, res);
