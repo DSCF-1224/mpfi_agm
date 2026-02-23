@@ -100,13 +100,13 @@ void test_point_input_per_prec(const mpfr_prec_t prec)
 
 
 
-    for (int i =  1; i <= 5; i++)
+    for (long i = -5; i <= 5; i++)
     {
         mpfr_mpfi_set_si(mpfr_x, mpfi_x, i, MPFR_RNDN);
 
 
 
-        for (int j =  i; j <= 5; j++)
+        for (long j = i; j <= 5; j++)
         {
             mpfr_mpfi_set_si(mpfr_y, mpfi_y, j, MPFR_RNDN);
 
