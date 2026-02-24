@@ -70,6 +70,7 @@ void test_point_input_unit_half(mpfr_ptr mpfr_res, mpfr_srcptr mpfr_x, mpfr_srcp
     {
         assert( mpfr_lessequal_p( &(mpfi_res->left), mpfr_res  ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
         assert( mpfr_lessequal_p( mpfr_res, &(mpfi_res->right) ) || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
+        assert( mpfi_is_inside_fr(mpfr_res, mpfi_res)            || printf_res_mpfr_and_mpfi(mpfr_x, mpfr_y, mpfr_res, mpfi_x, mpfi_y, mpfi_res) );
     }
 }
 
