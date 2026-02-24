@@ -6,6 +6,8 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     const mpfr_prec_t mpfi_prec = mpfi_get_prec(res);
 
+    bool is_converged = false;
+
     mpfi_t intersection_ag, res_a, res_a_prev, res_g, res_g_prev, tmp_a, tmp_g;
 
     mpfi_init2( intersection_ag , mpfi_prec );
@@ -25,18 +27,23 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 
         mpfi_intersect(intersection_ag, res_a, res_g);
 
-        if ( mpfi_is_empty(intersection_ag) )
-        {
-            mpfi_set(res_a_prev, res_a);
-            mpfi_set(res_g_prev, res_g);
+        is_converged = !mpfi_is_empty(intersection_ag);
 
-            continue;
-        }
+        if (is_converged) break;
 
-        break;
+        mpfi_set(res_a_prev, res_a);
+        mpfi_set(res_g_prev, res_g);
     }
 
-    mpfi_union(res, res_a, res_g);
+    if (is_converged)
+    {
+        mpfi_union(res, res_a, res_g);
+    }
+    else
+    {
+        mpfr_set_nan( &( res->left  ) );
+        mpfr_set_nan( &( res->right ) );
+    }
 
     mpfi_clear( intersection_ag );
     mpfi_clear( res_a           );
