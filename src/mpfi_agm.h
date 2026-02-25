@@ -1,6 +1,8 @@
 #ifndef MPFI_AGM_H
 #define MPFI_AGM_H
 
+#include <stdbool.h>
+
 #include <mpfi.h>
 
 
