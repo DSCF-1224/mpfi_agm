@@ -10,6 +10,18 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 
     mpfi_t intersection_ag, res_a, res_a_prev, res_g, res_g_prev, tmp_a, tmp_g;
 
+
+
+    if( mpfi_is_zero(op1) || mpfi_is_zero(op2) )
+    {
+        mpfr_set_zero( &( res->left  ), -1 );
+        mpfr_set_zero( &( res->right ),  1 );
+
+        return;
+    }
+
+
+
     mpfi_init2( intersection_ag , mpfi_prec );
     mpfi_init2( res_a           , mpfi_prec );
     mpfi_init2( res_a_prev      , mpfi_prec );
@@ -18,8 +30,12 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
     mpfi_init2( tmp_a           , mpfi_prec );
     mpfi_init2( tmp_g           , mpfi_prec );
 
+
+
     mpfi_set(res_a_prev, op1);
     mpfi_set(res_g_prev, op2);
+
+
 
     for (mpfr_prec_t i = 0; i < mpfi_prec; i++)
     {
@@ -35,6 +51,8 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
         mpfi_set(res_g_prev, res_g);
     }
 
+
+
     if (is_converged)
     {
         mpfi_union(res, res_a, res_g);
@@ -44,6 +62,8 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
         mpfr_set_nan( &( res->left  ) );
         mpfr_set_nan( &( res->right ) );
     }
+
+
 
     mpfi_clear( intersection_ag );
     mpfi_clear( res_a           );
