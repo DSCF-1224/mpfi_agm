@@ -8,12 +8,27 @@
 
 
 
+int printf_res(mpfi_ptr res, mpfi_srcptr x, mpfi_srcptr nan)
+{
+    printf("\n");
+
+    mpfr_printf( "x          : [%Rf %Rf]\n", &(x   -> left), &(x   -> right) );
+    mpfr_printf( "nan        : [%Rf %Rf]\n", &(nan -> left), &(nan -> right) );
+    mpfr_printf( "agm        : [%Rf %Rf]\n", &(res -> left), &(res -> right) );
+
+    printf("\n");
+
+    return EXIT_SUCCESS;
+}
+
+
+
 void test_nan_unit_half(mpfi_ptr res, mpfi_srcptr x, mpfi_srcptr nan)
 {
     mpfi_agm(res, x, nan);
 
-    assert( mpfr_nan_p( &( res->left  ) ) );
-    assert( mpfr_nan_p( &( res->right ) ) );
+    assert( mpfr_nan_p( &( res->left  ) ) || printf_res(res, x, nan) );
+    assert( mpfr_nan_p( &( res->right ) ) || printf_res(res, x, nan) );
 }
 
 
