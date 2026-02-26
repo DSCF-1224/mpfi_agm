@@ -12,6 +12,16 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 
 
 
+    if( mpfi_nan_p(op1) || mpfi_nan_p(op2) )
+    {
+        mpfr_set_nan( &( res->left  ) );
+        mpfr_set_nan( &( res->right ) );
+
+        return;
+    }
+
+
+
     if( mpfi_is_zero(op1) || mpfi_is_zero(op2) )
     {
         mpfr_set_zero( &( res->left  ), -1 );
