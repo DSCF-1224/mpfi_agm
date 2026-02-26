@@ -2,6 +2,14 @@
 
 
 
+inline static void mpfi_agm_set_nan(mpfi_ptr x)
+{
+    mpfr_set_nan( &( x->left  ) );
+    mpfr_set_nan( &( x->right ) );
+}
+
+
+
 void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     const mpfr_prec_t mpfi_prec = mpfi_get_prec(res);
@@ -14,10 +22,7 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 
     if( mpfi_nan_p(op1) || mpfi_nan_p(op2) )
     {
-        mpfr_set_nan( &( res->left  ) );
-        mpfr_set_nan( &( res->right ) );
-
-        return;
+        mpfi_agm_set_nan(res); return;
     }
 
 
@@ -69,8 +74,7 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
     }
     else
     {
-        mpfr_set_nan( &( res->left  ) );
-        mpfr_set_nan( &( res->right ) );
+        mpfi_agm_set_nan(res);
     }
 
 
