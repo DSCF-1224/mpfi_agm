@@ -12,8 +12,7 @@ inline static void mpfi_agm_set_nan(mpfi_ptr x)
 
 inline static void mpfi_agm_set_zero(mpfi_ptr x)
 {
-    mpfr_set_zero( &( x->left  ), -1 );
-    mpfr_set_zero( &( x->right ),  1 );
+    mpfi_set_ui(x, 0);
 }
 
 
