@@ -5,6 +5,7 @@
 #include <mpfr.h>
 #include <mpfi.h>
 #include "../src/mpfi_agm.h"
+#include "printf_interval.h"
 
 
 
@@ -12,9 +13,9 @@ int printf_res(mpfi_ptr res, mpfi_srcptr x, mpfi_srcptr nan)
 {
     printf("\n");
 
-    mpfr_printf( "x          : [%Rf %Rf]\n", &(x   -> left), &(x   -> right) );
-    mpfr_printf( "nan        : [%Rf %Rf]\n", &(nan -> left), &(nan -> right) );
-    mpfr_printf( "agm        : [%Rf %Rf]\n", &(res -> left), &(res -> right) );
+    printf_interval( "x  ", x   );
+    printf_interval( "nan", nan );
+    printf_interval( "agm", res );
 
     printf("\n");
 
