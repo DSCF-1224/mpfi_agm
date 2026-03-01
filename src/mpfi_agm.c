@@ -157,3 +157,25 @@ void mpfi_agm_step_tmp(mpfi_ptr res_a, mpfi_ptr res_g, mpfi_ptr tmp_a, mpfi_ptr 
     mpfr_sqrt(&( res_g->left  ), &( tmp_g->left  ), MPFR_RNDD);
     mpfr_sqrt(&( res_g->right ), &( tmp_g->right ), MPFR_RNDU);
 }
+
+
+
+void mpfi_agm_step_tmp_safe(mpfi_ptr res_a, mpfi_ptr res_g, mpfi_ptr tmp_a, mpfi_ptr tmp_g, mpfi_srcptr op1, mpfi_srcptr op2)
+{
+    if ( (res_a == tmp_g) || (res_g == tmp_a) )
+    {
+        mpfi_t safe_a, safe_g;
+
+        mpfi_init2( safe_a, mpfi_get_prec(res_a) );
+        mpfi_init2( safe_g, mpfi_get_prec(res_g) );
+
+        mpfi_agm_step_tmp(res_a, res_g, safe_a, safe_g, op1, op2);
+
+        mpfi_clear(safe_a);
+        mpfi_clear(safe_g);
+    }
+    else
+    {
+        mpfi_agm_step_tmp(res_a, res_g, tmp_a, tmp_g, op1, op2);
+    }
+}
