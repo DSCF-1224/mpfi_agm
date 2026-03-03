@@ -5,6 +5,7 @@
 #include <mpfr.h>
 #include <mpfi.h>
 #include "../src/mpfi_agm.h"
+#include "mpfi_agm_test_prec.h"
 #include "printf_interval.h"
 
 
@@ -148,9 +149,10 @@ void test_negative_input_per_prec(const mpfr_prec_t prec)
 
 int main(void)
 {
-    test_negative_input_per_prec( 53);
-    test_negative_input_per_prec(113);
-    test_negative_input_per_prec(237);
+    for (int i = 0; i < TEST_PREC_LIST_LEN; i++)
+    {
+        test_negative_input_per_prec(TEST_PREC_LIST[i]);
+    }
 
     return EXIT_SUCCESS;
 }
