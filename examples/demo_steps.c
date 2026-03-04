@@ -5,6 +5,7 @@
 #include <mpfr.h>
 #include <mpfi.h>
 #include "../src/mpfi_agm.h"
+#include "../tests/mpfi_agm_test_prec.h"
 
 
 
@@ -122,11 +123,10 @@ void demo_steps(const mpfr_prec_t mpfi_prec, const unsigned long init_x, const u
 
 int main(void)
 {
-    for (unsigned long i = 1; i < 6; i++)
+    for (int i = 0; i < TEST_PREC_LIST_LEN; i++)
+    for (unsigned long j = 1; j < 6; j++)
     {
-        demo_steps(  53, i, 1UL );
-        demo_steps( 113, i, 1UL );
-        demo_steps( 237, i, 1UL );
+        demo_steps(TEST_PREC_LIST[i], j, 1UL);
     }
 
     return EXIT_SUCCESS;
