@@ -5,6 +5,23 @@
 #include <mpfr.h>
 #include <mpfi.h>
 #include "../src/mpfi_agm.h"
+#include "mpfi_agm_test_prec.h"
+#include "printf_interval.h"
+
+
+
+int printf_res(mpfi_ptr res, mpfi_srcptr x, mpfi_srcptr nan)
+{
+    printf("\n");
+
+    printf_interval( "x  ", x   );
+    printf_interval( "nan", nan );
+    printf_interval( "agm", res );
+
+    printf("\n");
+
+    return EXIT_SUCCESS;
+}
 
 
 
@@ -12,8 +29,8 @@ void test_nan_unit_half(mpfi_ptr res, mpfi_srcptr x, mpfi_srcptr nan)
 {
     mpfi_agm(res, x, nan);
 
-    assert( mpfr_nan_p( &( res->left  ) ) );
-    assert( mpfr_nan_p( &( res->right ) ) );
+    assert( mpfr_nan_p( &( res->left  ) ) || printf_res(res, x, nan) );
+    assert( mpfr_nan_p( &( res->right ) ) || printf_res(res, x, nan) );
 }
 
 
@@ -72,9 +89,10 @@ void test_nan_per_prec(const mpfr_prec_t prec)
 
 int main(void)
 {
-    test_nan_per_prec( 53);
-    test_nan_per_prec(113);
-    test_nan_per_prec(237);
+    for (int i = 0; i < TEST_PREC_LIST_LEN; i++)
+    {
+        test_nan_per_prec(TEST_PREC_LIST[i]);
+    }
 
     return EXIT_SUCCESS;
 }
