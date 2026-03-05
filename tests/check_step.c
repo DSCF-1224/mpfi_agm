@@ -6,6 +6,22 @@
 #include <mpfi.h>
 #include "../src/mpfi_agm.h"
 #include "mpfi_agm_test_prec.h"
+#include "printf_interval.h"
+
+
+
+int printf_res(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_g)
+{
+    printf("\n");
+
+    printf_interval("input", input);
+    printf_interval("ari  ", res_a);
+    printf_interval("geo  ", res_g);
+
+    printf("\n");
+
+    return EXIT_SUCCESS;
+}
 
 
 
@@ -24,13 +40,11 @@ void test_same_input_case(const mpfi_srcptr input)
 
     if ( mpfi_nan_p(input) )
     {
-        assert( mpfi_nan_p(res_a) );
-        assert( mpfi_nan_p(res_g) );
+        assert( ( mpfi_nan_p(res_a) && mpfi_nan_p(res_g) ) || printf_res(input, res_a, res_g) );
     }
     else
     {
-        assert( mpfi_cmp(res_a, input) == 0 );
-        assert( mpfi_cmp(res_g, input) == 0 );
+        assert( ( ( mpfi_cmp(res_a, input) == 0 ) && ( mpfi_cmp(res_g, input) == 0 ) ) || printf_res(input, res_a, res_g) );
     }
 
     mpfi_clear(res_a);
