@@ -70,9 +70,9 @@ void test_same_input_case_ui(const mpfr_prec_t mpfi_prec, const unsigned long in
 
     assert( ( ( mpfi_cmp_ui(res_a, input) == 0 ) && ( mpfi_cmp_ui(res_g, input) == 0 ) ) || printf_res(x, res_a, res_g) );
 
-    mpfi_clear(x);
-    mpfi_clear(res_a);
-    mpfi_clear(res_g);
+    mpfi_clear( x     );
+    mpfi_clear( res_a );
+    mpfi_clear( res_g );
 }
 
 
@@ -102,22 +102,22 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
 
 
 
-    mpfr_set_zero ( &input->left  , 1 );
-    mpfr_set_inf  ( &input->right , 1 );
+    mpfr_set_zero ( &( input->left  ) , 1 );
+    mpfr_set_inf  ( &( input->right ) , 1 );
 
     test_same_input_case(input);
 
 
 
-    mpfr_set_inf( &input->left  , 1 );
-    mpfr_set_inf( &input->right , 1 );
+    mpfr_set_inf( &( input->left  ) , 1 );
+    mpfr_set_inf( &( input->right ) , 1 );
 
     test_same_input_case(input);
 
 
 
-    mpfr_set_nan(&input->left);
-    mpfr_set_nan(&input->right);
+    mpfr_set_nan( &( input->left  ) );
+    mpfr_set_nan( &( input->right ) );
 
     test_same_input_case(input);
 
