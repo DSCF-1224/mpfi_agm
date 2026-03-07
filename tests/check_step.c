@@ -25,7 +25,7 @@ int printf_res(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_g)
 
 
 
-void test_same_input_case(const mpfi_srcptr input)
+void test_same_input_unit(const mpfi_srcptr input)
 {
     mpfi_t res_a, res_g;
 
@@ -53,7 +53,7 @@ void test_same_input_case(const mpfi_srcptr input)
 
 
 
-void test_same_input_case_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
+void test_same_input_unit_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
 {
     mpfi_t x, res_a, res_g;
 
@@ -87,7 +87,7 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
 
     for (unsigned long i = 0; i < 6; i++)
     {
-        test_same_input_case_ui(mpfi_prec, i);
+        test_same_input_unit_ui(mpfi_prec, i);
     }
 
 
@@ -97,7 +97,7 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
     {
         mpfi_interv_d(input, ((double)i)/10, ((double)j)/10);
 
-        test_same_input_case(input);
+        test_same_input_unit(input);
     }
 
 
@@ -105,21 +105,21 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
     mpfr_set_zero ( &( input->left  ) , 1 );
     mpfr_set_inf  ( &( input->right ) , 1 );
 
-    test_same_input_case(input);
+    test_same_input_unit(input);
 
 
 
     mpfr_set_inf( &( input->left  ) , 1 );
     mpfr_set_inf( &( input->right ) , 1 );
 
-    test_same_input_case(input);
+    test_same_input_unit(input);
 
 
 
     mpfr_set_nan( &( input->left  ) );
     mpfr_set_nan( &( input->right ) );
 
-    test_same_input_case(input);
+    test_same_input_unit(input);
 
 
 
