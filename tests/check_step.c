@@ -10,7 +10,7 @@
 
 
 
-int printf_res(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_g)
+int printf_res_same_input(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_g)
 {
     printf("\n");
 
@@ -40,11 +40,11 @@ void test_same_input_unit(const mpfi_srcptr input)
 
     if ( mpfi_nan_p(input) )
     {
-        assert( ( mpfi_nan_p(res_a) && mpfi_nan_p(res_g) ) || printf_res(input, res_a, res_g) );
+        assert( ( mpfi_nan_p(res_a) && mpfi_nan_p(res_g) ) || printf_res_same_input(input, res_a, res_g) );
     }
     else
     {
-        assert( ( ( mpfi_cmp(res_a, input) == 0 ) && ( mpfi_cmp(res_g, input) == 0 ) ) || printf_res(input, res_a, res_g) );
+        assert( ( ( mpfi_cmp(res_a, input) == 0 ) && ( mpfi_cmp(res_g, input) == 0 ) ) || printf_res_same_input(input, res_a, res_g) );
     }
 
     mpfi_clear(res_a);
@@ -68,7 +68,7 @@ void test_same_input_unit_ui(const mpfr_prec_t mpfi_prec, const unsigned long in
 
     mpfi_agm_step(res_a, res_g, x, x);
 
-    assert( ( ( mpfi_cmp_ui(res_a, input) == 0 ) && ( mpfi_cmp_ui(res_g, input) == 0 ) ) || printf_res(x, res_a, res_g) );
+    assert( ( ( mpfi_cmp_ui(res_a, input) == 0 ) && ( mpfi_cmp_ui(res_g, input) == 0 ) ) || printf_res_same_input(x, res_a, res_g) );
 
     mpfi_clear( x     );
     mpfi_clear( res_a );
