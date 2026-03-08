@@ -46,6 +46,29 @@ int printf_res_same_input(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_
 
 
 
+void test_diff_input_unit(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
+{
+    mpfi_agm_step(mpfi_res_a, mpfi_res_g, op1, op2);
+
+
+
+    // validation: arithmetic mean
+
+    mpfr_add(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
+    mpfr_div_ui(mpfr_res_a, mpfr_res_a, 2, MPFR_RNDU);
+    assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
+
+
+
+    // validation: geometric mean
+
+    mpfr_mul(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
+    mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDD);
+    assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
+}
+
+
+
 void test_same_input_unit(const mpfi_srcptr input)
 {
     mpfi_t res_a, res_g;
