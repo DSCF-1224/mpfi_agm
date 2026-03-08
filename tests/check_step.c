@@ -10,6 +10,27 @@
 
 
 
+int printf_res_diff_input(mpfr_srcptr mpfr_res, mpfi_srcptr mpfi_res, mpfi_srcptr op1, mpfi_srcptr op2, const char* name)
+{
+    char finalized_name[9];
+
+    snprintf(finalized_name, sizeof(finalized_name), "mpfi.%s", name);
+
+    printf("\n");
+
+    printf_interval( "op1     "     , op1      );
+    printf_interval( "op2     "     , op2      );
+    printf_interval( finalized_name , mpfi_res );
+
+    mpfr_printf("mpfr.%s :  %Rf\n", name, mpfr_res);
+
+    printf("\n");
+
+    return EXIT_SUCCESS;
+}
+
+
+
 int printf_res_same_input(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_g)
 {
     printf("\n");
