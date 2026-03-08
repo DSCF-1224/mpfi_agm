@@ -46,7 +46,7 @@ int printf_res_same_input(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_
 
 
 
-void test_diff_input_unit(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
+void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     mpfi_agm_step(mpfi_res_a, mpfi_res_g, op1, op2);
 
@@ -65,6 +65,14 @@ void test_diff_input_unit(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpf
     mpfr_mul(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
     mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDD);
     assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
+}
+
+
+
+void test_diff_input_unit(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
+{
+    test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, op1, op2);
+    test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, op2, op1);
 }
 
 
@@ -147,7 +155,6 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
             mpfi_set_ui(y, j);
 
             test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, y, x);
         }
 
         if (i > 0)
@@ -156,7 +163,6 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
             mpfr_set_inf( &( y->right ), 1 );
 
             test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, y, x);
         }
     }
 
