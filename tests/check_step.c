@@ -168,6 +168,20 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
 
 
 
+    for (int i = 0; i <= 10; i++)
+    {
+        mpfi_set_d( x, ((double)i)/10 );
+
+        for (int j = (i + 1); j <= 10; j++)
+        {
+            mpfi_set_d( y, ((double)j)/10 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+        }
+    }
+
+
+
     mpfr_clear( mpfr_res_a );
     mpfr_clear( mpfr_res_g );
 
