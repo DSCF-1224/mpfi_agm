@@ -121,6 +121,58 @@ void test_same_input_unit_ui(const mpfr_prec_t mpfi_prec, const unsigned long in
 
 
 
+void test_diff_input(const mpfr_prec_t mpfi_prec)
+{
+    mpfr_t mpfr_res_a, mpfr_res_g;
+    mpfi_t mpfi_res_a, mpfi_res_g, x, y;
+
+
+
+    mpfr_init2( mpfr_res_a , mpfi_prec );
+    mpfr_init2( mpfr_res_g , mpfi_prec );
+
+    mpfi_init2( mpfi_res_a , mpfi_prec );
+    mpfi_init2( mpfi_res_g , mpfi_prec );
+    mpfi_init2( x          , mpfi_prec );
+    mpfi_init2( y          , mpfi_prec );
+
+
+
+    for (unsigned long i = 0; i <= 5; i++)
+    {
+        mpfi_set_ui(x, i);
+
+        for (unsigned long j = (i + 1); j <= 5; j++)
+        {
+            mpfi_set_ui(y, j);
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, y, x);
+        }
+
+        if (i > 0)
+        {
+            mpfr_set_inf( &( y->left  ), 1 );
+            mpfr_set_inf( &( y->right ), 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, y, x);
+        }
+    }
+
+
+
+    mpfr_clear( mpfr_res_a );
+    mpfr_clear( mpfr_res_g );
+
+    mpfi_clear( mpfi_res_a );
+    mpfi_clear( mpfi_res_g );
+    mpfi_clear( x          );
+    mpfi_clear( y          );
+}
+
+
+
 void test_same_input(const mpfr_prec_t mpfi_prec)
 {
     mpfi_t input;
@@ -175,6 +227,7 @@ void test_same_input(const mpfr_prec_t mpfi_prec)
 void test_per_prec(const mpfr_prec_t mpfi_prec)
 {
     test_same_input(mpfi_prec);
+    test_diff_input(mpfi_prec);
 }
 
 
