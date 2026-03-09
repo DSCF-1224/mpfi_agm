@@ -54,6 +54,10 @@ void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_pt
 
     // validation: arithmetic mean
 
+    mpfr_add(mpfr_res_a, &(op1->left), &(op2->left), MPFR_RNDD);
+    mpfr_div_ui(mpfr_res_a, mpfr_res_a, 2, MPFR_RNDD);
+    assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
+
     mpfr_add(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
     mpfr_div_ui(mpfr_res_a, mpfr_res_a, 2, MPFR_RNDU);
     assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
@@ -64,6 +68,10 @@ void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_pt
 
     mpfr_mul(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
     mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDD);
+    assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
+
+    mpfr_mul(mpfr_res_g, &(op1->right), &(op2->right), MPFR_RNDU);
+    mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDU);
     assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
 }
 
