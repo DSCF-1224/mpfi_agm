@@ -146,18 +146,23 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
 
 
 
-    for (unsigned long i = 0; i <= 5; i++)
+    for (unsigned long x_l = 0   ; x_l <= 5; x_l++)
+    for (unsigned long x_r = x_l ; x_r <= 5; x_r++)
     {
-        mpfi_set_ui(x, i);
+        mpfi_interv_ui(x, x_l, x_r);
 
-        for (unsigned long j = (i + 1); j <= 5; j++)
+        for (unsigned long y_l = 0   ; y_l <= 5; y_l++)
+        for (unsigned long y_r = y_l ; y_r <= 5; y_r++)
         {
-            mpfi_set_ui(y, j);
+            mpfi_interv_ui(y, y_l, y_r);
 
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            if ( (x_l != y_l) || (x_r != y_r) )
+            {
+                test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            }
         }
 
-        if (i > 0)
+        if (x_l > 0)
         {
             mpfr_set_inf( &( y->left  ), 1 );
             mpfr_set_inf( &( y->right ), 1 );
