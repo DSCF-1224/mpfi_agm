@@ -46,6 +46,22 @@ int printf_res_same_input(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_
 
 
 
+void test_diff_input_arithmetic(mpfr_ptr res, mpfr_srcptr op1, mpfr_srcptr op2, mpfr_rnd_t rnd)
+{
+    mpfr_add(res, op1, op2, rnd);
+    mpfr_div_ui(res, res, 2, rnd);
+}
+
+
+
+void test_diff_input_geometric(mpfr_ptr res, mpfr_srcptr op1, mpfr_srcptr op2, mpfr_rnd_t rnd)
+{
+    mpfr_mul(res, op1, op2, rnd);
+    mpfr_sqrt(res, res, rnd);
+}
+
+
+
 void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     mpfi_agm_step(mpfi_res_a, mpfi_res_g, op1, op2);
@@ -54,24 +70,20 @@ void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_pt
 
     // validation: arithmetic mean
 
-    mpfr_add(mpfr_res_a, &(op1->left), &(op2->left), MPFR_RNDD);
-    mpfr_div_ui(mpfr_res_a, mpfr_res_a, 2, MPFR_RNDD);
+    test_diff_input_arithmetic(mpfr_res_a, &(op1->left), &(op2->left), MPFR_RNDD);
     assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
 
-    mpfr_add(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
-    mpfr_div_ui(mpfr_res_a, mpfr_res_a, 2, MPFR_RNDU);
+    test_diff_input_arithmetic(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
     assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
 
 
 
     // validation: geometric mean
 
-    mpfr_mul(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
-    mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDD);
+    test_diff_input_geometric(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
     assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
 
-    mpfr_mul(mpfr_res_g, &(op1->right), &(op2->right), MPFR_RNDU);
-    mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDU);
+    test_diff_input_geometric(mpfr_res_g, &(op1->right), &(op2->right), MPFR_RNDU);
     assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
 }
 
