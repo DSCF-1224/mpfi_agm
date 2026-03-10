@@ -62,6 +62,13 @@ void test_diff_input_geometric(mpfr_ptr res, mpfr_srcptr op1, mpfr_srcptr op2, m
 
 
 
+void test_diff_input_assertion(mpfr_srcptr mpfr_res, mpfi_srcptr mpfi_res, mpfi_srcptr op1, mpfi_srcptr op2, const char *name)
+{
+    assert( mpfi_is_inside_fr(mpfr_res, mpfi_res) || printf_res_diff_input(mpfr_res, mpfi_res, op1, op2, name) );
+}
+
+
+
 void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     mpfi_agm_step(mpfi_res_a, mpfi_res_g, op1, op2);
@@ -71,20 +78,20 @@ void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_pt
     // validation: arithmetic mean
 
     test_diff_input_arithmetic(mpfr_res_a, &(op1->left), &(op2->left), MPFR_RNDD);
-    assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
+    test_diff_input_assertion(mpfr_res_a, mpfi_res_a, op1, op2, "ari");
 
     test_diff_input_arithmetic(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
-    assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
+    test_diff_input_assertion(mpfr_res_a, mpfi_res_a, op1, op2, "ari");
 
 
 
     // validation: geometric mean
 
     test_diff_input_geometric(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
-    assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
+    test_diff_input_assertion(mpfr_res_g, mpfi_res_g, op1, op2, "geo");
 
     test_diff_input_geometric(mpfr_res_g, &(op1->right), &(op2->right), MPFR_RNDU);
-    assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
+    test_diff_input_assertion(mpfr_res_g, mpfi_res_g, op1, op2, "geo");
 }
 
 
