@@ -185,7 +185,7 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
 
             if ( (x_l != y_l) || (x_r != y_r) )
             {
-                test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+                test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
             }
         }
 
