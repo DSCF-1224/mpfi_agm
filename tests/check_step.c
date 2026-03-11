@@ -215,6 +215,14 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
                 test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
             }
         }
+
+        if (x_l > 0)
+        {
+            mpfr_set_inf( &( y->left  ), 1 );
+            mpfr_set_inf( &( y->right ), 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+        }
     }
 
 
