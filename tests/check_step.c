@@ -200,15 +200,20 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
 
 
 
-    for (int i = 0; i <= 10; i++)
+    for (unsigned long x_l = 0   ; x_l <= 10; x_l++)
+    for (unsigned long x_r = x_l ; x_r <= 10; x_r++)
     {
-        mpfi_set_d( x, ((double)i)/10 );
+        mpfi_interv_d( x, ((double)x_l)/10, ((double)x_r)/10 );
 
-        for (int j = (i + 1); j <= 10; j++)
+        for (unsigned long y_l = 0   ; y_l <= 10; y_l++)
+        for (unsigned long y_r = y_l ; y_r <= 10; y_r++)
         {
-            mpfi_set_d( y, ((double)j)/10 );
+            mpfi_interv_d( y, ((double)y_l)/10, ((double)y_r)/10 );
 
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            if ( (x_l != y_l) || (x_r != y_r) )
+            {
+                test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            }
         }
     }
 
