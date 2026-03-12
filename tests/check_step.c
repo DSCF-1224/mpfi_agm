@@ -64,7 +64,14 @@ void test_diff_input_geometric(mpfr_ptr res, mpfr_srcptr op1, mpfr_srcptr op2, m
 
 void test_diff_input_assertion(mpfr_srcptr mpfr_res, mpfi_srcptr mpfi_res, mpfi_srcptr op1, mpfi_srcptr op2, const char *name)
 {
-    assert( mpfi_is_inside_fr(mpfr_res, mpfi_res) || printf_res_diff_input(mpfr_res, mpfi_res, op1, op2, name) );
+    if ( mpfr_nan_p(mpfr_res) )
+    {
+        assert( mpfi_nan_p(mpfi_res) || printf_res_diff_input(mpfr_res, mpfi_res, op1, op2, name) );
+    }
+    else
+    {
+        assert( mpfi_is_inside_fr(mpfr_res, mpfi_res) || printf_res_diff_input(mpfr_res, mpfi_res, op1, op2, name) );
+    }
 }
 
 
@@ -155,6 +162,13 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
 
             test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
         }
+
+
+
+        mpfr_set_nan( &( y->left  ) );
+        mpfr_set_nan( &( y->right ) );
+
+        test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
     }
 
 
