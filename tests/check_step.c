@@ -178,6 +178,8 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
     {
         mpfi_interv_ui(x, x_l, x_r);
 
+
+
         for (unsigned long y_l = 0   ; y_l <= 5; y_l++)
         for (unsigned long y_r = y_l ; y_r <= 5; y_r++)
         {
@@ -189,8 +191,17 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
             }
         }
 
+
+
         if (x_l > 0)
         {
+            mpfr_set_zero ( &( y->left  ) , 1 );
+            mpfr_set_inf  ( &( y->right ) , 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+
+
+
             mpfr_set_inf( &( y->left  ), 1 );
             mpfr_set_inf( &( y->right ), 1 );
 
@@ -205,6 +216,8 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
     {
         mpfi_interv_d( x, ((double)x_l)/10, ((double)x_r)/10 );
 
+
+
         for (unsigned long y_l = 0   ; y_l <= 10; y_l++)
         for (unsigned long y_r = y_l ; y_r <= 10; y_r++)
         {
@@ -216,8 +229,17 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
             }
         }
 
+
+
         if (x_l > 0)
         {
+            mpfr_set_zero ( &( y->left  ) , 1 );
+            mpfr_set_inf  ( &( y->right ) , 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+
+
+
             mpfr_set_inf( &( y->left  ), 1 );
             mpfr_set_inf( &( y->right ), 1 );
 
