@@ -104,58 +104,6 @@ void test_diff_input_unit(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpf
 
 
 
-void test_same_input_unit(const mpfi_srcptr input)
-{
-    mpfi_t res_a, res_g;
-
-
-
-    const mpfr_prec_t mpfi_prec = mpfi_get_prec(input);
-
-    mpfi_init2(res_a, mpfi_prec);
-    mpfi_init2(res_g, mpfi_prec);
-
-    mpfi_agm_step(res_a, res_g, input, input);
-
-    if ( mpfi_nan_p(input) )
-    {
-        assert( ( mpfi_nan_p(res_a) && mpfi_nan_p(res_g) ) || printf_res_same_input(input, res_a, res_g) );
-    }
-    else
-    {
-        assert( ( ( mpfi_cmp(res_a, input) == 0 ) && ( mpfi_cmp(res_g, input) == 0 ) ) || printf_res_same_input(input, res_a, res_g) );
-    }
-
-    mpfi_clear(res_a);
-    mpfi_clear(res_g);
-}
-
-
-
-void test_same_input_unit_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
-{
-    mpfi_t x, res_a, res_g;
-
-
-
-    mpfi_init2(x, mpfi_prec);
-
-    mpfi_init2(res_a, mpfi_prec);
-    mpfi_init2(res_g, mpfi_prec);
-
-    mpfi_set_ui(x, input);
-
-    mpfi_agm_step(res_a, res_g, x, x);
-
-    assert( ( ( mpfi_cmp_ui(res_a, input) == 0 ) && ( mpfi_cmp_ui(res_g, input) == 0 ) ) || printf_res_same_input(x, res_a, res_g) );
-
-    mpfi_clear( x     );
-    mpfi_clear( res_a );
-    mpfi_clear( res_g );
-}
-
-
-
 void test_diff_input(const mpfr_prec_t mpfi_prec)
 {
     mpfr_t mpfr_res_a, mpfr_res_g;
@@ -256,6 +204,58 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
     mpfi_clear( mpfi_res_g );
     mpfi_clear( x          );
     mpfi_clear( y          );
+}
+
+
+
+void test_same_input_unit(const mpfi_srcptr input)
+{
+    mpfi_t res_a, res_g;
+
+
+
+    const mpfr_prec_t mpfi_prec = mpfi_get_prec(input);
+
+    mpfi_init2(res_a, mpfi_prec);
+    mpfi_init2(res_g, mpfi_prec);
+
+    mpfi_agm_step(res_a, res_g, input, input);
+
+    if ( mpfi_nan_p(input) )
+    {
+        assert( ( mpfi_nan_p(res_a) && mpfi_nan_p(res_g) ) || printf_res_same_input(input, res_a, res_g) );
+    }
+    else
+    {
+        assert( ( ( mpfi_cmp(res_a, input) == 0 ) && ( mpfi_cmp(res_g, input) == 0 ) ) || printf_res_same_input(input, res_a, res_g) );
+    }
+
+    mpfi_clear(res_a);
+    mpfi_clear(res_g);
+}
+
+
+
+void test_same_input_unit_ui(const mpfr_prec_t mpfi_prec, const unsigned long input)
+{
+    mpfi_t x, res_a, res_g;
+
+
+
+    mpfi_init2(x, mpfi_prec);
+
+    mpfi_init2(res_a, mpfi_prec);
+    mpfi_init2(res_g, mpfi_prec);
+
+    mpfi_set_ui(x, input);
+
+    mpfi_agm_step(res_a, res_g, x, x);
+
+    assert( ( ( mpfi_cmp_ui(res_a, input) == 0 ) && ( mpfi_cmp_ui(res_g, input) == 0 ) ) || printf_res_same_input(x, res_a, res_g) );
+
+    mpfi_clear( x     );
+    mpfi_clear( res_a );
+    mpfi_clear( res_g );
 }
 
 
