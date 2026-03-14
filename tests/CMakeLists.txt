@@ -12,6 +12,7 @@ endfunction()
 
 
 # Add all tests
+add_mpfi_test( check_crossing_zero  check_crossing_zero.c  )
 add_mpfi_test( check_nan            check_nan.c            )
 add_mpfi_test( check_interval_input check_interval_input.c )
 add_mpfi_test( check_negative_input check_negative_input.c )
