@@ -46,6 +46,36 @@ int printf_res_same_input(mpfi_srcptr input, mpfi_srcptr res_a, mpfi_srcptr res_
 
 
 
+void test_diff_input_arithmetic(mpfr_ptr res, mpfr_srcptr op1, mpfr_srcptr op2, mpfr_rnd_t rnd)
+{
+    mpfr_add(res, op1, op2, rnd);
+    mpfr_div_ui(res, res, 2, rnd);
+}
+
+
+
+void test_diff_input_geometric(mpfr_ptr res, mpfr_srcptr op1, mpfr_srcptr op2, mpfr_rnd_t rnd)
+{
+    mpfr_mul(res, op1, op2, rnd);
+    mpfr_sqrt(res, res, rnd);
+}
+
+
+
+void test_diff_input_assertion(mpfr_srcptr mpfr_res, mpfi_srcptr mpfi_res, mpfi_srcptr op1, mpfi_srcptr op2, const char *name)
+{
+    if ( mpfr_nan_p(mpfr_res) )
+    {
+        assert( mpfi_nan_p(mpfi_res) || printf_res_diff_input(mpfr_res, mpfi_res, op1, op2, name) );
+    }
+    else
+    {
+        assert( mpfi_is_inside_fr(mpfr_res, mpfi_res) || printf_res_diff_input(mpfr_res, mpfi_res, op1, op2, name) );
+    }
+}
+
+
+
 void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpfi_res_a, mpfi_ptr mpfi_res_g, mpfi_srcptr op1, mpfi_srcptr op2)
 {
     mpfi_agm_step(mpfi_res_a, mpfi_res_g, op1, op2);
@@ -54,17 +84,21 @@ void test_diff_input_unit_half(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_pt
 
     // validation: arithmetic mean
 
-    mpfr_add(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
-    mpfr_div_ui(mpfr_res_a, mpfr_res_a, 2, MPFR_RNDU);
-    assert( mpfi_is_inside_fr(mpfr_res_a, mpfi_res_a) || printf_res_diff_input(mpfr_res_a, mpfi_res_a, op1, op2, "ari") );
+    test_diff_input_arithmetic(mpfr_res_a, &(op1->left), &(op2->left), MPFR_RNDD);
+    test_diff_input_assertion(mpfr_res_a, mpfi_res_a, op1, op2, "ari");
+
+    test_diff_input_arithmetic(mpfr_res_a, &(op1->right), &(op2->right), MPFR_RNDU);
+    test_diff_input_assertion(mpfr_res_a, mpfi_res_a, op1, op2, "ari");
 
 
 
     // validation: geometric mean
 
-    mpfr_mul(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
-    mpfr_sqrt(mpfr_res_g, mpfr_res_g, MPFR_RNDD);
-    assert( mpfi_is_inside_fr(mpfr_res_g, mpfi_res_g) || printf_res_diff_input(mpfr_res_g, mpfi_res_g, op1, op2, "geo") );
+    test_diff_input_geometric(mpfr_res_g, &(op1->left), &(op2->left), MPFR_RNDD);
+    test_diff_input_assertion(mpfr_res_g, mpfi_res_g, op1, op2, "geo");
+
+    test_diff_input_geometric(mpfr_res_g, &(op1->right), &(op2->right), MPFR_RNDU);
+    test_diff_input_assertion(mpfr_res_g, mpfi_res_g, op1, op2, "geo");
 }
 
 
@@ -73,6 +107,130 @@ void test_diff_input_unit(mpfr_ptr mpfr_res_a, mpfr_ptr mpfr_res_g, mpfi_ptr mpf
 {
     test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, op1, op2);
     test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, op2, op1);
+}
+
+
+
+void test_diff_input(const mpfr_prec_t mpfi_prec)
+{
+    mpfr_t mpfr_res_a, mpfr_res_g;
+    mpfi_t mpfi_res_a, mpfi_res_g, x, y;
+
+
+
+    mpfr_init2( mpfr_res_a , mpfi_prec );
+    mpfr_init2( mpfr_res_g , mpfi_prec );
+
+    mpfi_init2( mpfi_res_a , mpfi_prec );
+    mpfi_init2( mpfi_res_g , mpfi_prec );
+    mpfi_init2( x          , mpfi_prec );
+    mpfi_init2( y          , mpfi_prec );
+
+
+
+    for (unsigned long x_l = 0   ; x_l <= 5; x_l++)
+    for (unsigned long x_r = x_l ; x_r <= 5; x_r++)
+    {
+        mpfi_interv_ui(x, x_l, x_r);
+
+
+
+        for (unsigned long y_l = 0   ; y_l <= 5; y_l++)
+        for (unsigned long y_r = y_l ; y_r <= 5; y_r++)
+        {
+            mpfi_interv_ui(y, y_l, y_r);
+
+            if ( (x_l != y_l) || (x_r != y_r) )
+            {
+                test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            }
+        }
+
+
+
+        if (x_r > 0)
+        {
+            mpfr_set_zero ( &( y->left  ) , 1 );
+            mpfr_set_inf  ( &( y->right ) , 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+        }
+
+
+
+        if (x_l > 0)
+        {
+            mpfr_set_inf( &( y->left  ), 1 );
+            mpfr_set_inf( &( y->right ), 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+        }
+
+
+
+        mpfr_set_nan( &( y->left  ) );
+        mpfr_set_nan( &( y->right ) );
+
+        test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+    }
+
+
+
+    for (unsigned long x_l = 0   ; x_l <= 10; x_l++)
+    for (unsigned long x_r = x_l ; x_r <= 10; x_r++)
+    {
+        mpfi_interv_d( x, ((double)x_l)/10, ((double)x_r)/10 );
+
+
+
+        for (unsigned long y_l = 0   ; y_l <= 10; y_l++)
+        for (unsigned long y_r = y_l ; y_r <= 10; y_r++)
+        {
+            mpfi_interv_d( y, ((double)y_l)/10, ((double)y_r)/10 );
+
+            if ( (x_l != y_l) || (x_r != y_r) )
+            {
+                test_diff_input_unit_half(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+            }
+        }
+
+
+
+        if (x_r > 0)
+        {
+            mpfr_set_zero ( &( y->left  ) , 1 );
+            mpfr_set_inf  ( &( y->right ) , 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+        }
+
+
+
+        if (x_l > 0)
+        {
+            mpfr_set_inf( &( y->left  ), 1 );
+            mpfr_set_inf( &( y->right ), 1 );
+
+            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+        }
+
+
+
+        mpfr_set_nan( &( y->left  ) );
+        mpfr_set_nan( &( y->right ) );
+
+        test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
+    }
+
+
+
+    mpfr_clear( mpfr_res_a );
+    mpfr_clear( mpfr_res_g );
+
+    mpfi_clear( mpfi_res_a );
+    mpfi_clear( mpfi_res_g );
+    mpfi_clear( x          );
+    mpfi_clear( y          );
 }
 
 
@@ -125,70 +283,6 @@ void test_same_input_unit_ui(const mpfr_prec_t mpfi_prec, const unsigned long in
     mpfi_clear( x     );
     mpfi_clear( res_a );
     mpfi_clear( res_g );
-}
-
-
-
-void test_diff_input(const mpfr_prec_t mpfi_prec)
-{
-    mpfr_t mpfr_res_a, mpfr_res_g;
-    mpfi_t mpfi_res_a, mpfi_res_g, x, y;
-
-
-
-    mpfr_init2( mpfr_res_a , mpfi_prec );
-    mpfr_init2( mpfr_res_g , mpfi_prec );
-
-    mpfi_init2( mpfi_res_a , mpfi_prec );
-    mpfi_init2( mpfi_res_g , mpfi_prec );
-    mpfi_init2( x          , mpfi_prec );
-    mpfi_init2( y          , mpfi_prec );
-
-
-
-    for (unsigned long i = 0; i <= 5; i++)
-    {
-        mpfi_set_ui(x, i);
-
-        for (unsigned long j = (i + 1); j <= 5; j++)
-        {
-            mpfi_set_ui(y, j);
-
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
-        }
-
-        if (i > 0)
-        {
-            mpfr_set_inf( &( y->left  ), 1 );
-            mpfr_set_inf( &( y->right ), 1 );
-
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
-        }
-    }
-
-
-
-    for (int i = 0; i <= 10; i++)
-    {
-        mpfi_set_d( x, ((double)i)/10 );
-
-        for (int j = (i + 1); j <= 10; j++)
-        {
-            mpfi_set_d( y, ((double)j)/10 );
-
-            test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
-        }
-    }
-
-
-
-    mpfr_clear( mpfr_res_a );
-    mpfr_clear( mpfr_res_g );
-
-    mpfi_clear( mpfi_res_a );
-    mpfi_clear( mpfi_res_g );
-    mpfi_clear( x          );
-    mpfi_clear( y          );
 }
 
 
