@@ -213,6 +213,13 @@ void test_diff_input(const mpfr_prec_t mpfi_prec)
 
             test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
         }
+
+
+
+        mpfr_set_nan( &( y->left  ) );
+        mpfr_set_nan( &( y->right ) );
+
+        test_diff_input_unit(mpfr_res_a, mpfr_res_g, mpfi_res_a, mpfi_res_g, x, y);
     }
 
 
