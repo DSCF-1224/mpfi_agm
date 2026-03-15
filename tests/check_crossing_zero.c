@@ -75,6 +75,26 @@ void test_per_prec(const mpfr_prec_t prec)
 
 
 
+        // [ neg, pos] x [-inf,  -0]
+        // [-inf,  -0] x [ neg, pos]
+
+        mpfr_set_inf  ( &( y->left  ), -1 );
+        mpfr_set_zero ( &( y->right ), -1 );
+
+        test_crossing_zero_unit(res, x, y);
+
+
+
+        // [ neg, pos] x [-inf,  +0]
+        // [-inf,  +0] x [ neg, pos]
+
+        mpfr_set_inf  ( &( y->left  ), -1 );
+        mpfr_set_zero ( &( y->right ),  1 );
+
+        test_crossing_zero_unit(res, x, y);
+
+
+
         // [neg,  pos] x [ -0, +inf]
         // [ -0, +inf] x [neg,  pos]
 
