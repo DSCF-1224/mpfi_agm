@@ -151,7 +151,7 @@ void test_per_prec(const mpfr_prec_t prec)
     mpfr_set_inf( &( x->left  ), -1 );
     mpfr_set_inf( &( x->right ),  1 );
 
-    test_crossing_zero_unit(res, x, x);
+    test_crossing_zero_unit_half(res, x, x);
 
 
 
