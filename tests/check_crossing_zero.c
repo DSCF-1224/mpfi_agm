@@ -60,6 +60,7 @@ void test_per_prec(const mpfr_prec_t prec)
 
 
         // [neg, pos] x non-zero
+        // non-zero   x [neg, pos]
 
         for (long y_l = -5  ; y_l < 6; y_l++)
         for (long y_r = y_l ; y_r < 6; y_r++)
@@ -68,8 +69,77 @@ void test_per_prec(const mpfr_prec_t prec)
 
             if ( !mpfi_is_zero(y) )
             {
-                test_crossing_zero_unit_half(res, x, y);
+                test_crossing_zero_unit(res, x, y);
             }
+        }
+
+
+
+        // [ neg,  pos] x [-inf, -inf]
+        // [-inf, -inf] x [ neg,  pos]
+
+        mpfr_set_inf( &( y->left  ), -1 );
+        mpfr_set_inf( &( y->right ), -1 );
+
+        test_crossing_zero_unit(res, x, y);
+
+
+
+        // [ neg, pos] x [-inf, neg]
+        // [-inf, neg] x [ neg, pos]
+    
+        for (long y_r = -5; y_r < 0; y_r++)
+        {
+            mpfr_set_inf ( &( y->left  ), -1              );
+            mpfr_set_si  ( &( y->right ), y_r , MPFR_RNDN );
+
+            test_crossing_zero_unit(res, x, y);
+        }
+
+
+
+        // [ neg, pos] x [-inf,  -0]
+        // [-inf,  -0] x [ neg, pos]
+
+        mpfr_set_inf  ( &( y->left  ), -1 );
+        mpfr_set_zero ( &( y->right ), -1 );
+
+        test_crossing_zero_unit(res, x, y);
+
+
+
+        // [ neg, pos] x [-inf,  +0]
+        // [-inf,  +0] x [ neg, pos]
+
+        mpfr_set_inf  ( &( y->left  ), -1 );
+        mpfr_set_zero ( &( y->right ),  1 );
+
+        test_crossing_zero_unit(res, x, y);
+
+
+
+        // [ neg, pos] x [-inf, pos]
+        // [-inf, pos] x [ neg, pos]
+    
+        for (long y_r = 1; y_r < 6; y_r++)
+        {
+            mpfr_set_inf ( &( y->left  ), -1              );
+            mpfr_set_si  ( &( y->right ), y_r , MPFR_RNDN );
+
+            test_crossing_zero_unit(res, x, y);
+        }
+
+
+
+        // [neg,  pos] x [neg, +inf]
+        // [neg, +inf] x [neg,  pos]
+    
+        for (long y_l = -5; y_l < 0; y_l++)
+        {
+            mpfr_set_si  ( &( y->left  ), y_l , MPFR_RNDN );
+            mpfr_set_inf ( &( y->right ), 1               );
+
+            test_crossing_zero_unit(res, x, y);
         }
 
 
@@ -87,21 +157,53 @@ void test_per_prec(const mpfr_prec_t prec)
         // [neg,  pos] x [ +0, +inf]
         // [ +0, +inf] x [neg,  pos]
 
-        mpfr_set_zero ( &( y->left  ),  1 );
-        mpfr_set_inf  ( &( y->right ),  1 );
+        mpfr_set_zero ( &( y->left  ), 1 );
+        mpfr_set_inf  ( &( y->right ), 1 );
 
         test_crossing_zero_unit(res, x, y);
+
+
+
+        // [neg,  pos] x [pos, +inf]
+        // [pos, +inf] x [neg,  pos]
+    
+        for (long y_l = 1; y_l < 6; y_l++)
+        {
+            mpfr_set_si  ( &( y->left  ), y_l , MPFR_RNDN );
+            mpfr_set_inf ( &( y->right ), 1               );
+
+            test_crossing_zero_unit(res, x, y);
+        }
 
 
 
         // [ neg,  pos] x [+inf, +inf]
         // [+inf, +inf] x [ neg,  pos]
 
-        mpfr_set_inf( &( y->left  ),  1 );
+        mpfr_set_inf( &( y->left  ), 1 );
+        mpfr_set_inf( &( y->right ), 1 );
+
+        test_crossing_zero_unit(res, x, y);
+
+
+
+        // [ neg,  pos] x [-inf, +inf]
+        // [-inf, +inf] x [ neg,  pos]
+
+        mpfr_set_inf( &( y->left  ), -1 );
         mpfr_set_inf( &( y->right ),  1 );
 
         test_crossing_zero_unit(res, x, y);
     }
+
+
+
+    // [-inf, +inf] x [-inf, +inf]
+
+    mpfr_set_inf( &( x->left  ), -1 );
+    mpfr_set_inf( &( x->right ),  1 );
+
+    test_crossing_zero_unit_half(res, x, x);
 
 
 
