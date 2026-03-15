@@ -36,6 +36,8 @@ jobs:
 
             - name: Run AGM tests
               run: |
+                    valgrind --leak-check=full --error-exitcode=1 ./build/tests/check_crossing_zero
+                    valgrind --leak-check=full --error-exitcode=1 ./build/tests/check_interval_input
                     valgrind --leak-check=full --error-exitcode=1 ./build/tests/check_nan
                     valgrind --leak-check=full --error-exitcode=1 ./build/tests/check_negative_input
                     valgrind --leak-check=full --error-exitcode=1 ./build/tests/check_point_input
