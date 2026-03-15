@@ -125,6 +125,15 @@ void test_per_prec(const mpfr_prec_t prec)
 
 
 
+    // [-inf, +inf] x [-inf, +inf]
+
+    mpfr_set_inf( &( x->left  ), -1 );
+    mpfr_set_inf( &( x->right ),  1 );
+
+    test_crossing_zero_unit(res, x, x);
+
+
+
     mpfi_clear( res );
     mpfi_clear( x   );
     mpfi_clear( y   );
