@@ -56,6 +56,13 @@ void mpfi_agm(mpfi_ptr res, mpfi_srcptr op1, mpfi_srcptr op2)
 
 
 
+    if ( (mpfr_sgn( &(op1->left) ) < 0) || (mpfr_sgn( &(op2->left) ) < 0) )
+    {
+        mpfi_agm_set_nan(res); return;
+    }
+
+
+
     const mpfr_prec_t mpfi_prec = mpfi_get_prec(res);
 
     bool is_converged = false;
